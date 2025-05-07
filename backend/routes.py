@@ -23,3 +23,15 @@ def delete_task(id):
 	db.session.delete(task)
 	db.session.commit()
 	return jsonify('message': 'Task Deleted')
+
+
+	@task_routes.route('/tasks/<int:id>', methods = ['PUT'])
+	def update_task():
+		task = Task.query.get_or_404(id)
+		data = request.json
+
+		task.title = task.get('title', task.title )
+		task.completed = task.get('completed', task.completed)
+
+		db.session.commit()
+		return jsonify(task.to_dict())
